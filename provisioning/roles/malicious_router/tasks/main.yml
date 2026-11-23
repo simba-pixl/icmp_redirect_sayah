@@ -1,0 +1,74 @@
+---
+- name: Adding aliases
+  loop: "{{ aliases | dict2items }}"
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.value }} {{ item.key }}"
+
+- name: Ensure python3-scapy and netcat client are present
+  apt:
+    name:
+      - python3-pip
+      - python3-scapy
+      - netcat-openbsd
+    state: present
+    update_cache: yes
+
+- name: Make sure scapy is importable even if the package above is unavailable
+  pip:
+    name: scapy
+    state: present
+    executable: pip3
+  ignore_errors: true
+
+# Default state matches the lab's docker-compose: forwarding ON so that,
+# once redirected, this box genuinely relays victim->target traffic (real
+# MITM potential) for Task 1; send_redirects OFF (Question 3 asks the
+# student to flip these to 1 and observe that it changes nothing, because
+# scapy sends raw crafted packets that bypass this kernel knob entirely).
+- name: Set default sysctls (ip_forward=1, send_redirects=0), persistent
+  copy:
+    dest: /etc/sysctl.d/99-icmp-redirect-lab.conf
+    content: |
+      net.ipv4.ip_forward = 1
+      net.ipv4.conf.all.send_redirects = 0
+      net.ipv4.conf.default.send_redirects = 0
+      net.ipv4.conf.eth0.send_redirects = 0
+    owner: root
+    mode: '0644'
+
+- name: Apply sysctl settings now
+  command: sysctl --system
+  changed_when: false
+
+- name: Create a working directory for the student
+  file:
+    path: /home/user/icmp-redirect-lab
+    state: directory
+    owner: user
+    group: user
+    mode: '0755'
+
+- name: Install the Task 2 sniff-and-spoof (MITM) sample code
+  copy:
+    src: mitm_sample.py
+    dest: /home/user/icmp-redirect-lab/mitm_sample.py
+    owner: user
+    group: user
+    mode: '0644'
+
+- name: Deliver the per-sandbox secret word (same value as on victim)
+  template:
+    src: secret_word.txt.j2
+    dest: /home/user/icmp-redirect-lab/secret_word.txt
+    owner: user
+    group: user
+    mode: '0640'
+
+- name: Install malicious_router orientation README
+  copy:
+    src: README-malicious-router.txt
+    dest: /home/user/icmp-redirect-lab/README.txt
+    owner: user
+    group: user
+    mode: '0644'

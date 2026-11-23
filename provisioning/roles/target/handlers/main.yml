@@ -1,0 +1,5 @@
+- name: Restart icmp-lab-netcat service
+  systemd:
+    name: icmp-lab-netcat
+    daemon_reload: true
+    state: restarted

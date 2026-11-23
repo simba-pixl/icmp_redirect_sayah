@@ -1,0 +1,79 @@
+---
+# Basic configuration of all defined devices
+
+# Installation of common tools at all hosts
+- name: Configuring hosts
+  hosts: hosts
+  become: yes
+  roles:
+    - hosts
+
+# Attacker: SEED image, attack tooling, convenience aliases/skeletons
+- name: Configure attacker
+  hosts: attacker
+  become: true
+  roles:
+    - role: user-access
+      user_access_username: user
+      user_access_password: Password123
+      user_access_sudo: True
+    - role: attacker
+    - role: chrony
+
+# Victim: accepts ICMP redirects (countermeasure deliberately disabled, as
+# in the original lab), gets the secret_word and the flag-1 checker.
+- name: Configure victim
+  hosts: victim
+  become: true
+  roles:
+    - role: user-access
+      user_access_username: user
+      user_access_password: Password123
+      user_access_sudo: False
+    - role: victim
+
+# Malicious router: python3-scapy, send_redirects disabled by default
+# (Question 3 asks the student to flip it), attack/MITM skeleton scripts.
+- name: Configure malicious_router
+  hosts: malicious_router
+  become: true
+  roles:
+    - role: user-access
+      user_access_username: user
+      user_access_password: Password123
+      user_access_sudo: True
+    - role: malicious_router
+
+# Legitimate router: plain IPv4 forwarding between the two subnets.
+- name: Configure router
+  hosts: router
+  become: true
+  roles:
+    - role: router
+
+# Target (destination, 192.168.60.5): netcat "service" + flag-2 checker.
+- name: Configure target
+  hosts: target
+  become: true
+  roles:
+    - role: user-access
+      user_access_username: user
+      user_access_password: Password123
+      user_access_sudo: False
+    - role: target
+
+- name: setup hosts logging roles
+  hosts:
+    - routers
+    - hosts
+  become: yes
+  vars:
+    sandbox_name: icmp-redirect-mitm-lab-local
+    central_syslog_ip: 78.128.251.179
+  roles:
+    - role: sandbox-logging
+      slf_destination_port: '{% if hostvars["man"] is defined -%} 514 {%- else -%} 515 {%- endif %}'
+      slf_destination: '{% if hostvars["man"] is defined -%} {{ hostvars["man"].ansible_host }} {%- else -%} {{ central_syslog_ip }} {%- endif %}'
+      slf_sandbox_id: "{{ global_sandbox_id | default(student_id) | default(0) }}"
+      slf_sandbox_name: '{{ global_sandbox_name | default(sandbox_name) }}'
+      slf_pool_id: '{{ global_pool_id | default(None) }}'
