@@ -22,24 +22,24 @@
 
 - name: Create a working directory for the student
   file:
-    path: /home/user/icmp-redirect-lab
+    path: /home/seed/icmp-redirect-lab
     state: directory
-    owner: user
-    group: user
+    owner: seed
+    group: seed
     mode: '0755'
 
 - name: Install the Task 1 ICMP-redirect code skeleton (student fills in the @@@@)
   copy:
     src: icmp_redirect_skeleton.py
-    dest: /home/user/icmp-redirect-lab/icmp_redirect_skeleton.py
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/icmp_redirect_skeleton.py
+    owner: seed
+    group: seed
     mode: '0644'
 
 - name: Install a short orientation README
   copy:
     src: README-attacker.txt
-    dest: /home/user/icmp-redirect-lab/README.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/README.txt
+    owner: seed
+    group: seed
     mode: '0644'

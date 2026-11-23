@@ -71,7 +71,7 @@ levels.append({
         "`attacker`, `victim`, `malicious_router`, `router` and `target`. "
         "Right-click any of them and choose **`Open GUI`** to get a console.\n"
         "2. Log in to `attacker`, `victim`, `malicious_router` and `target` with "
-        "username **`user`** and password **`Password123`**. Log in to `router` "
+        "username **`seed`** and password **`dees`**. Log in to `router` "
         "with the management account shown in its GUI panel.\n\n"
         "Alternatively, you can use SSH to connect to any machine - this makes it "
         "easier to copy-paste commands and flags. See "

@@ -14,8 +14,8 @@
   become: true
   roles:
     - role: user-access
-      user_access_username: user
-      user_access_password: Password123
+      user_access_username: seed
+      user_access_password: dees
       user_access_sudo: True
     - role: attacker
     - role: chrony
@@ -27,8 +27,8 @@
   become: true
   roles:
     - role: user-access
-      user_access_username: user
-      user_access_password: Password123
+      user_access_username: seed
+      user_access_password: dees
       user_access_sudo: False
     - role: victim
 
@@ -39,8 +39,8 @@
   become: true
   roles:
     - role: user-access
-      user_access_username: user
-      user_access_password: Password123
+      user_access_username: seed
+      user_access_password: dees
       user_access_sudo: True
     - role: malicious_router
 
@@ -57,8 +57,8 @@
   become: true
   roles:
     - role: user-access
-      user_access_username: user
-      user_access_password: Password123
+      user_access_username: seed
+      user_access_password: dees
       user_access_sudo: False
     - role: target
 

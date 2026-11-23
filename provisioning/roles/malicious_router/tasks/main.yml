@@ -43,32 +43,32 @@
 
 - name: Create a working directory for the student
   file:
-    path: /home/user/icmp-redirect-lab
+    path: /home/seed/icmp-redirect-lab
     state: directory
-    owner: user
-    group: user
+    owner: seed
+    group: seed
     mode: '0755'
 
 - name: Install the Task 2 sniff-and-spoof (MITM) sample code
   copy:
     src: mitm_sample.py
-    dest: /home/user/icmp-redirect-lab/mitm_sample.py
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/mitm_sample.py
+    owner: seed
+    group: seed
     mode: '0644'
 
 - name: Deliver the per-sandbox secret word (same value as on victim)
   template:
     src: secret_word.txt.j2
-    dest: /home/user/icmp-redirect-lab/secret_word.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/secret_word.txt
+    owner: seed
+    group: seed
     mode: '0640'
 
 - name: Install malicious_router orientation README
   copy:
     src: README-malicious-router.txt
-    dest: /home/user/icmp-redirect-lab/README.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/README.txt
+    owner: seed
+    group: seed
     mode: '0644'

@@ -7,10 +7,10 @@
 
 - name: Create a working directory for the student
   file:
-    path: /home/user/icmp-redirect-lab
+    path: /home/seed/icmp-redirect-lab
     state: directory
-    owner: user
-    group: user
+    owner: seed
+    group: seed
     mode: '0755'
 
 - name: Install the netcat-like logging listener
@@ -53,9 +53,9 @@
 - name: Deliver the per-sandbox service port (Task 2 input)
   template:
     src: service_port.txt.j2
-    dest: /home/user/icmp-redirect-lab/service_port.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/service_port.txt
+    owner: seed
+    group: seed
     mode: '0640'
 
 - name: Install the Task 2 flag checker outside the student home
@@ -69,7 +69,7 @@
 - name: Allow the student to execute only the Task 2 checker as root
   copy:
     dest: /etc/sudoers.d/icmp-redirect-check-flag2
-    content: "user ALL=(root) NOPASSWD: /usr/local/sbin/check-flag2\n"
+    content: "seed ALL=(root) NOPASSWD: /usr/local/sbin/check-flag2\n"
     owner: root
     group: root
     mode: '0440'
@@ -78,7 +78,7 @@
 - name: Install target orientation README
   copy:
     src: README-target.txt
-    dest: /home/user/icmp-redirect-lab/README.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/README.txt
+    owner: seed
+    group: seed
     mode: '0644'

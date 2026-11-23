@@ -30,10 +30,10 @@
 
 - name: Create a working directory for the student
   file:
-    path: /home/user/icmp-redirect-lab
+    path: /home/seed/icmp-redirect-lab
     state: directory
-    owner: user
-    group: user
+    owner: seed
+    group: seed
     mode: '0755'
 
 # Per-sandbox secret word the student must relay into a netcat session in
@@ -41,9 +41,9 @@
 - name: Deliver the per-sandbox secret word (Task 2 input)
   template:
     src: secret_word.txt.j2
-    dest: /home/user/icmp-redirect-lab/secret_word.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/secret_word.txt
+    owner: seed
+    group: seed
     mode: '0640'
 
 # Awards flag_task1 only when the victim's route cache really shows the
@@ -59,7 +59,7 @@
 - name: Allow the student to execute only the Task 1 checker as root
   copy:
     dest: /etc/sudoers.d/icmp-redirect-check-flag1
-    content: "user ALL=(root) NOPASSWD: /usr/local/sbin/check-flag1\n"
+    content: "seed ALL=(root) NOPASSWD: /usr/local/sbin/check-flag1\n"
     owner: root
     group: root
     mode: '0440'
@@ -68,7 +68,7 @@
 - name: Install victim orientation README
   copy:
     src: README-victim.txt
-    dest: /home/user/icmp-redirect-lab/README.txt
-    owner: user
-    group: user
+    dest: /home/seed/icmp-redirect-lab/README.txt
+    owner: seed
+    group: seed
     mode: '0644'
