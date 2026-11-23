@@ -22,7 +22,7 @@ TP) and built on the structure of the `library-junior-hacker` scenario.
 |-------------------|-------|-----------|-----------|
 | attacker          | seed  | ubuntu    | m1.medium |
 | victim            | seed  | ubuntu    | m1.medium |
-| malicious_router  | seed  | ubuntu    | m1.medium |
+| malicious-router  | seed  | ubuntu    | m1.medium |
 | router (router)   | seed  | ubuntu    | m1.medium |
 | target            | seed  | ubuntu    | m1.medium |
 
@@ -32,7 +32,7 @@ See `topology.yml` for the full network layout (two subnets,
 ## Scoring
 - **20 points total**, across 9 graded levels (2 points up to 5 points each).
 - Hint penalties range from **-0.5 to -2 points** per hint.
-- See `game_design.md` for the full level-by-level score and hint table.
+- See `game-design.md` for the full level-by-level score and hint table.
 
 ## Anti-cheat: per-sandbox randomized flags (APG)
 Four values are randomized per sandbox via CyberRangeCZ's Automatic Problem
@@ -42,7 +42,7 @@ Generation feature (`variables.yml`):
 |---------------|-------------------------------------------------------------------|
 | `flag_task1`  | Awarded by a checker script on `victim`, only if the redirect genuinely took effect |
 | `nc_port`     | The port Task 2's listener runs on, discovered via a file on `target` |
-| `secret_word` | The word that must be redacted in Task 2's MITM traffic, delivered via a file on `victim`/`malicious_router` |
+| `secret_word` | The word that must be redacted in Task 2's MITM traffic, delivered via a file on `victim`/`malicious-router` |
 | `flag_task2`  | Awarded by a checker script on `target`, only if the word arrived correctly redacted |
 
 The 5 "Question" levels keep static answers - they test understanding of OS/
@@ -73,10 +73,10 @@ the automated flags - the two are not mutually exclusive.
 ├── topology.yml          # 5 nodes, all "seed" image / mgmt_user ubuntu, 2 networks
 ├── variables.yml         # APG variables for the 4 randomized values above
 ├── training.json         # Importable CyberRangeCZ linear training definition
-├── game_design.md        # Full storyline + level/score/hint breakdown
+├── game-design.md        # Full storyline + level/score/hint breakdown
 ├── ATTRIBUTION.txt       # Credits for the SEED lab and the junior-hacker template
 ├── build/
-│   └── build_training.py # Source-of-truth script that generates training.json
+│   └── build-training.py # Source-of-truth script that generates training.json
 └── provisioning/
     ├── playbook.yml
     ├── requirements.yml
@@ -85,18 +85,18 @@ the automated flags - the two are not mutually exclusive.
         ├── hosts/             # common packages on every host-type node
         ├── attacker/          # scapy + Task 1 skeleton
         ├── victim/            # accept_redirects=1, secret word, flag-1 checker
-        ├── malicious_router/  # scapy + sysctls + Task 2 MITM skeleton
+        ├── malicious-router/  # scapy + sysctls + Task 2 MITM skeleton
         ├── router/            # plain IPv4 forwarding between the two subnets
         └── target/            # netcat-like logging listener + flag-2 checker
 ```
 
-To change wording, scoring, or hints, edit `build/build_training.py` and
-re-run `python3 build/build_training.py` rather than hand-editing
+To change wording, scoring, or hints, edit `build/build-training.py` and
+re-run `python3 build/build-training.py` rather than hand-editing
 `training.json`, so the two stay in sync.
 
 ## Assumptions made while building this (flag me if any are wrong)
 1. **Image name**: "seed" is used literally, as requested, on all five nodes
-   (attacker, victim, malicious_router, router, target), with `mgmt_user:
+   (attacker, victim, malicious-router, router, target), with `mgmt_user:
    ubuntu`. Please confirm these are the exact values in your cloud's image
    catalog - some deployments register the image as e.g.
    `seed-ubuntu-20.04`, or use a different default admin account name.
@@ -109,11 +109,11 @@ re-run `python3 build/build_training.py` rather than hand-editing
    as a decoy/distractor for the nmap-style recon step.
 4. **Console access**: per your confirmation, all 5 machines are reachable
    by the student (`accessible_by_user: True` on both networks), since the
-   lab genuinely requires actions on victim, malicious_router and target,
+   lab genuinely requires actions on victim, malicious-router and target,
    not just on the attacker.
 5. **Total duration**: levels 2-10 sum to about 76 minutes of estimated
    solve time (plus intro/access), which is a reasonable single TP session;
-   adjust `estimated_duration` per level in `build_training.py` if your
+   adjust `estimated_duration` per level in `build-training.py` if your
    session is shorter/longer.
 
 Let me know if you'd like any of these changed, additional hints, a harder/

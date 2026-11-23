@@ -15,8 +15,8 @@
 
 - name: Install the netcat-like logging listener
   copy:
-    src: nc_logger.py
-    dest: /usr/local/sbin/nc_logger.py
+    src: nc-logger.py
+    dest: /usr/local/sbin/nc-logger.py
     owner: root
     mode: '0755'
 
@@ -52,7 +52,7 @@
 
 - name: Deliver the per-sandbox service port (Task 2 input)
   template:
-    src: service_port.txt.j2
+    src: service-port.txt.j2
     dest: /home/seed/icmp-redirect-lab/service_port.txt
     owner: seed
     group: seed

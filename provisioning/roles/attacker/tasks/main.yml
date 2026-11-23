@@ -30,8 +30,8 @@
 
 - name: Install the Task 1 ICMP-redirect code skeleton (student fills in the @@@@)
   copy:
-    src: icmp_redirect_skeleton.py
-    dest: /home/seed/icmp-redirect-lab/icmp_redirect_skeleton.py
+    src: icmp-redirect-skeleton.py
+    dest: /home/seed/icmp-redirect-lab/icmp-redirect-skeleton.py
     owner: seed
     group: seed
     mode: '0644'

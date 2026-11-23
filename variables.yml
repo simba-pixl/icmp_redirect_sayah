@@ -44,7 +44,7 @@ secret_word:
   - type: username
     length: 8
     # The word the student must type into the netcat session on the victim
-    # and that the MITM script running on malicious_router must replace
+    # and that the MITM script running on malicious-router must replace
     # with same-length 'A's before forwarding. Delivered to the student via
     # a file on the victim host. "username" type is used (vs. "password")
     # purely because it generates an easy-to-type alphabetic word - it has

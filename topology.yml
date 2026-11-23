@@ -20,7 +20,7 @@ hosts:
       mgmt_user: ubuntu
     flavor: m1.medium
 
-  - name: malicious_router
+  - name: malicious-router
     base_box:
       image: seed
       mgmt_user: ubuntu
@@ -67,7 +67,7 @@ net_mappings:
     network: attacker-switch
     ip: 10.9.0.5
 
-  - host: malicious_router
+  - host: malicious-router
     network: attacker-switch
     ip: 10.9.0.111
 

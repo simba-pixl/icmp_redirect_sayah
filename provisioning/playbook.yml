@@ -34,15 +34,15 @@
 
 # Malicious router: python3-scapy, send_redirects disabled by default
 # (Question 3 asks the student to flip it), attack/MITM skeleton scripts.
-- name: Configure malicious_router
-  hosts: malicious_router
+- name: Configure malicious-router
+  hosts: malicious-router
   become: true
   roles:
     - role: user-access
       user_access_username: seed
       user_access_password: dees
       user_access_sudo: True
-    - role: malicious_router
+    - role: malicious-router
 
 # Legitimate router: plain IPv4 forwarding between the two subnets.
 - name: Configure router

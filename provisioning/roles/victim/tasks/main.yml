@@ -37,10 +37,10 @@
     mode: '0755'
 
 # Per-sandbox secret word the student must relay into a netcat session in
-# Task 2 (see provisioning/roles/malicious_router and provisioning/roles/target).
+# Task 2 (see provisioning/roles/malicious-router and provisioning/roles/target).
 - name: Deliver the per-sandbox secret word (Task 2 input)
   template:
-    src: secret_word.txt.j2
+    src: secret-word.txt.j2
     dest: /home/seed/icmp-redirect-lab/secret_word.txt
     owner: seed
     group: seed

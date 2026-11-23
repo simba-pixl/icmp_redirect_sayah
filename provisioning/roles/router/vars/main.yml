@@ -1,7 +1,7 @@
 aliases:
   attacker: 10.9.0.105
   victim: 10.9.0.5
-  malicious_router: 10.9.0.111
+  malicious-router: 10.9.0.111
   router: 10.9.0.11
   target: 192.168.60.5
 routings: []
