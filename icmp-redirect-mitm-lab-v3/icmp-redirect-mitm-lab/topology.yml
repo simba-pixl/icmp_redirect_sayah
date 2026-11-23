@@ -1,0 +1,86 @@
+name: icmp-redirect-mitm-lab
+
+# Every node uses the "seed" image (SEED Ubuntu), management account "ubuntu",
+# flavor m1.medium - including the plain router and target, which don't
+# strictly need Scapy/sysctl but are kept on the same image/flavor for a
+# uniform, simple topology as requested.
+# Confirm "seed" is the exact name registered in your cloud's image catalog
+# (e.g. it may be "seed-ubuntu-20.04" on some deployments) and adjust if needed.
+
+hosts:
+  - name: attacker
+    base_box:
+      image: seed
+      mgmt_user: ubuntu
+    flavor: m1.medium
+
+  - name: victim
+    base_box:
+      image: seed
+      mgmt_user: ubuntu
+    flavor: m1.medium
+
+  - name: malicious_router
+    base_box:
+      image: seed
+      mgmt_user: ubuntu
+    flavor: m1.medium
+
+  - name: target
+    base_box:
+      image: seed
+      mgmt_user: ubuntu
+    flavor: m1.medium
+
+routers:
+  - name: router
+    base_box:
+      image: seed
+      mgmt_user: ubuntu
+    flavor: m1.medium
+
+wan:
+  name: internet-connection
+  cidr: 100.100.100.0/24
+
+networks:
+  # 10.9.0.0/24 - LAN shared by the attacker, the victim and the malicious
+  # router, exactly as in Figure 1 of the lab (the malicious router is NOT
+  # physically connected to 192.168.60.0/24 - it only needs to be on the
+  # same subnet as the victim for the ICMP redirect to be accepted).
+  - name: attacker-switch
+    cidr: 10.9.0.0/24
+    accessible_by_user: True
+
+  # 192.168.60.0/24 - the "remote" network the victim is tricked into
+  # re-routing traffic for. Hosts the destination machine used in Task 2.
+  - name: target-switch
+    cidr: 192.168.60.0/24
+    accessible_by_user: True
+
+net_mappings:
+  - host: attacker
+    network: attacker-switch
+    ip: 10.9.0.105
+
+  - host: victim
+    network: attacker-switch
+    ip: 10.9.0.5
+
+  - host: malicious_router
+    network: attacker-switch
+    ip: 10.9.0.111
+
+  - host: target
+    network: target-switch
+    ip: 192.168.60.5
+
+router_mappings:
+  - router: router
+    network: attacker-switch
+    ip: 10.9.0.11
+  - router: router
+    network: target-switch
+    ip: 192.168.60.11
+
+groups: []

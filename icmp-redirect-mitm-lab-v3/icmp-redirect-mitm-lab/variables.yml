@@ -1,0 +1,51 @@
+# APG (Automatic Problem Generation) variables.
+#
+# CyberRangeCZ generates one value per variable for every sandbox in the
+# pool. Ansible injects them into the provisioning of that sandbox only
+# (see provisioning/roles/*/vars and the templates that use them), and the
+# matching training level is set to "Correct Answer - Variable Name" with
+# "Variant Answers" enabled, instead of a static "Correct Answer".
+# Result: every student's sandbox contains different secret material, so a
+# flag copied from another student will not validate against their own
+# sandbox.
+#
+# These four variables back the two hands-on exploit flags (Task 1 and
+# Task 2) plus the two pieces of "case data" the student needs in order to
+# run Task 2 (the netcat port and the word to redact). The five Question
+# levels (Q1-Q5) test understanding of fixed OS/network behaviour and are
+# intentionally left as static answers in training.json - there is nothing
+# to leak there beyond the underlying technical fact, which is the same on
+# every sandbox.
+
+flag_task1:
+  - type: text
+    length: 12
+    # Awarded by root-owned /usr/local/sbin/check-flag1 checker only once
+    # the victim's route cache actually shows the malicious router as the
+    # gateway for 192.168.60.5 - i.e. only after a working redirect attack.
+
+flag_task2:
+  - type: password
+    length: 12
+    # Awarded by root-owned /usr/local/sbin/check-flag2 checker only once
+    # the root-protected logged netcat traffic shows the secret_word correctly
+    # replaced by a same-length run of 'A' characters - i.e. only after a
+    # working, TCP-sequence-safe MITM injection.
+
+nc_port:
+  - type: port
+    min: 9000
+    max: 9999
+    # The port the destination's netcat "service" listens on. Delivered to
+    # the student via a file on the target host (not guessable, not fixed
+    # at 9090 like the original lab, so it must be discovered per-sandbox).
+
+secret_word:
+  - type: username
+    length: 8
+    # The word the student must type into the netcat session on the victim
+    # and that the MITM script running on malicious_router must replace
+    # with same-length 'A's before forwarding. Delivered to the student via
+    # a file on the victim host. "username" type is used (vs. "password")
+    # purely because it generates an easy-to-type alphabetic word - it has
+    # no relation to any real account.
